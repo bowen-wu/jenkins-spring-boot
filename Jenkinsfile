@@ -1,4 +1,7 @@
 pipeline {
+    agent {
+        docker { image 'circleci/openjdk:8u212-jdk-stretch' }
+    }
     stages {
         stage('Example') {
             input {
@@ -14,9 +17,6 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                docker { image 'circleci/openjdk:8u212-jdk-stretch' }
-            }
             steps {
                 sh 'mvn clean verify'
             }
