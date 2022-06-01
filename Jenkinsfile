@@ -25,5 +25,15 @@ pipeline {
                 sh 'mvn clean verify'
             }
         }
+        stage('Docker Build') {
+            steps {
+                echo 'Starting to build docker image'
+
+                script {
+                     def customImage = docker.build("101.35.43.9:5000/demo-0.0.1:${new Date().format('yyyy-MM-dd-HH-mm-ss')}")
+                     customImage.push()
+                }
+            }
+        }
     }
 }
