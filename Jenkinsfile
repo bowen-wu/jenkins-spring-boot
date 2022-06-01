@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    triggers {
+       pollSCM('* * * * *')
+    }
     stages {
         stage('Example') {
             input {
@@ -23,13 +26,4 @@ pipeline {
             }
         }
     }
-}
-
-
-def setScmPollStrategyAndBuildTypes(List buildTypes) {
-    def propertiesArray = [
-            parameters([choice(choices: buildTypes.join('\n'), description: '', name: 'BuildType')]),
-            pipelineTriggers([[$class: "SCMTrigger", scmpoll_spec: "* * * * *"]])
-    ];
-    properties(propertiesArray);
 }
