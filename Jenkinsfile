@@ -28,6 +28,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo 'Starting to build docker image'
+                ls target/
 
                 script {
                      def customImage = docker.build("101.35.43.9:5000/demo-0.0.1:${new Date().format('yyyy-MM-dd-HH-mm-ss')}")
