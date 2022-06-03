@@ -15,14 +15,16 @@ pipeline {
             }
             steps {
                 sh 'mvn clean verify'
+                echo '🎉 Verify Success 🎉'
             }
         }
         stage('Docker Build') {
             steps {
-                echo '🎉🎉🎉Starting to build docker image'
+                echo 'Starting to build docker image'
 
                 script {
-                     def customImage = docker.build("101.35.43.9:5000/test-jenkinsfile:${new Date().format('yyyy-MM-dd HH:mm:ss')}")
+                     def customImage = docker.build("101.35.43.9:5000/testJenkinsfile:${new Date().format('yyyy-MM-dd HH:mm:ss')}")
+                     echo '🎉 Docker Build Success 🎉'
                      customImage.push()
                 }
             }
