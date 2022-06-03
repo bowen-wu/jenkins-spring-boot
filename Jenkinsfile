@@ -20,6 +20,8 @@ pipeline {
                 script {
                      def customImage = docker.build("101.35.43.9:5000/test-jenkinsfile:${new Date().format('yyyy-MM-dd_HH-mm-ss')}")
                      echo '🎉 Docker Build Success 🎉'
+                     customImage.push();
+                     echo '🎉 Push Success 🎉'
                 }
             }
         }
