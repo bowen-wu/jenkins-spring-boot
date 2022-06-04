@@ -11,9 +11,15 @@ def versionsStr = response.tags.join('\n');
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                echo "maven -v"
+                input {
+                    message "Choose a version"
+                    ok "Deploy"
+                    parameters {
+                        choice(choices: versionsStr, description: 'version', name: 'version')
+                    }
+                }
             }
         }
     }
