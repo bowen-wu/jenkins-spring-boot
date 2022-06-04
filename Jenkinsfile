@@ -1,7 +1,10 @@
 System.setProperty('org.apache.commons.jelly.tags.fmt.timeZone', 'Asia/Shanghai');
 
+def timeStamp = Calendar.getInstance().getTime().format('YYYYMMdd-hhmmss',TimeZone.getTimeZone('CST'))
+println("timeStamp: ${timeStamp}")
+
 String buildNumber = env.BUILD_NUMBER;
-String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss');
+String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss', TimeZone.getTimeZone('Asia/Shanghai'));
 String projectName = env.JOB_NAME.split(/\//)[0];
 String version = "${buildNumber}_${timestamp}_${projectName}";
 
