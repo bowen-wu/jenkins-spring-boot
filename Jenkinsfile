@@ -1,7 +1,5 @@
 String buildNumber = env.BUILD_NUMBER;
-DateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-format.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-String timestamp = format.format(new Date());
+String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss', TimeZone.getTimeZone('Asia/Shanghai'));
 String projectName = env.JOB_NAME.split(/\//)[0];
 String version = "${buildNumber}_${timestamp}_${projectName}";
 
