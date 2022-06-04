@@ -1,34 +1,29 @@
 pipeline {
-    agent {
-        docker { image 'circleci/openjdk:8u212-jdk-stretch' }
+    agent any
+    triggers {
+       pollSCM('* * * * *')
     }
     stages {
-        stage('Example') {
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                }
-            }
-            steps {
-                echo "Hello, ${PERSON}, nice to meet you."
-            }
-        }
         stage('Test') {
+            agent {
+                docker { image 'circleci/openjdk:8u212-jdk-stretch' }
+            }
             steps {
                 sh 'mvn clean verify'
+                echo '🎉 Verify Success 🎉'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                echo 'Starting to build docker image'
+
+                script {
+                     def customImage = docker.build("101.35.43.9:5000/test-jenkinsfile:${new Date().format('yyyy-MM-dd_HH-mm-ss')}")
+                     echo '🎉 Docker Build Success 🎉'
+                     customImage.push();
+                     echo '🎉 Push Success 🎉'
+                }
             }
         }
     }
-}
-
-
-def setScmPollStrategyAndBuildTypes(List buildTypes) {
-    def propertiesArray = [
-            parameters([choice(choices: buildTypes.join('\n'), description: '', name: 'BuildType')]),
-            pipelineTriggers([[$class: "SCMTrigger", scmpoll_spec: "* * * * *"]])
-    ];
-    properties(propertiesArray);
 }

@@ -1,12 +1,14 @@
-FROM jenkins/jenkins:2.332.3-jdk11
-USER root
-RUN apt-get update && apt-get install -y lsb-release
-RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-  https://download.docker.com/linux/debian/gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) \
-  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-  https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-RUN apt-get update && apt-get install -y docker-ce-cli
-USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean:1.25.3 docker-workflow:1.28"
+# 基础镜像
+FROM openjdk:8u322-jdk
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY target/test-jenkinsfile-0.0.1-SNAPSHOT.jar /app
+
+# 暴露端口
+EXPOSE 8080
+
+CMD ["java", "-jar", "test-jenkinsfile-0.0.1-SNAPSHOT.jar"]
+
+
