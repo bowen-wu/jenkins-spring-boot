@@ -1,3 +1,10 @@
+String buildNumber = env.BUILD_NUMBER;
+String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss');
+String projectName = env.JOB_NAME.split(/\//)[0];
+String version = "${buildNumber}-${timestamp}-${projectName}";
+
+println("version: ${version}")
+
 pipeline {
     agent any
     triggers {
