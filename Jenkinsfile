@@ -1,7 +1,9 @@
+System.setProperty('org.apache.commons.jelly.tags.fmt.timeZone', 'Asia/Shanghai');
+
 String buildNumber = env.BUILD_NUMBER;
 String timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss');
 String projectName = env.JOB_NAME.split(/\//)[0];
-String version = "${buildNumber}-${timestamp}-${projectName}";
+String version = "${buildNumber}_${timestamp}_${projectName}";
 
 println("version: ${version}")
 
@@ -10,6 +12,7 @@ pipeline {
         docker {
             image 'maven:3.8.1-adoptopenjdk-11'
             args '-v $HOME/.m2:/root/.m2'
+            reuseNode true
         }
     }
     triggers {
