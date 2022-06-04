@@ -5,16 +5,16 @@ String timestamp = format.format(new Date());
 String projectName = env.JOB_NAME.split(/\//)[0];
 String version = "${buildNumber}_${timestamp}_${projectName}";
 
-println("version: ${version}")
-
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.1-adoptopenjdk-11'
-            args '-v $HOME/.m2:/root/.m2'
-            reuseNode true
-        }
-    }
+    // TODO: 此处添加 maven 缓存会导致 jenkins 失败
+//     agent {
+//         docker {
+//             image 'maven:3.8.1-adoptopenjdk-11'
+//             args '-v $HOME/.m2:/root/.m2'
+//             reuseNode true
+//         }
+//     }
+    agent any
     triggers {
        pollSCM('* * * * *')
     }
@@ -33,7 +33,7 @@ pipeline {
                 echo 'Starting to build docker image'
 
                 script {
-                     def customImage = docker.build("101.35.43.9:5000/test-jenkinsfile:${new Date().format('yyyy-MM-dd_HH-mm-ss')}")
+                     def customImage = docker.build("101.35.43.9:5000/test-jenkinsfile:${version}")
                      echo '🎉 Docker Build Success 🎉'
                      customImage.push();
                      echo '🎉 Push Success 🎉'
