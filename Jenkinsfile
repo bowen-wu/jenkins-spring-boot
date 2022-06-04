@@ -19,6 +19,9 @@ pipeline {
             }
             steps {
                 echo "🎉 You choose version: ${version} 🎉"
+                sh "ssh root@101.35.43.9 'docker pull 101.35.43.9:5000/test-jenkinsfile:${version}'"
+                echo "🎉 Pull 101.35.43.9:5000/test-jenkinsfile:${version} Success~ 🎉"
+//                 sh "ssh root@101.35.43.9 'source /root/project/course/start-docker-container.sh ${version}'"
             }
         }
     }
