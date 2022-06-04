@@ -10,4 +10,11 @@ def versionsStr = response.tags.join('\n');
 
 pipeline {
     agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo "maven -v"
+            }
+        }
+    }
 }
